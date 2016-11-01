@@ -40,6 +40,24 @@ class ODESolver:
                 break
         self.plot(x,y,'Euler','scatter')
 
+    def midpoint(self):
+        f = self.equation.f
+        h = self.h
+        x = [self.x0]
+        y = [self.y0]
+        xn = x[0]
+        yn = y[0]
+        print('%(xn).4f\t%(yn).4f'%{'xn':xn, 'yn':yn})
+        while 1:
+            yn = yn + h*f(xn+(h/2),yn + (h*f(xn,yn)/2))
+            xn = xn + h
+            print('%(xn).4f\t%(yn).4f'%{'xn':xn, 'yn':yn})
+            x.append(xn)
+            y.append(yn)
+            if xn > self.xf:
+                break
+        self.plot(x,y,'Midpoint','scatter')
+
     def plot(self,x,y,method,pl):
         import matplotlib.pyplot as plt
         fig = plt.figure()
@@ -57,3 +75,4 @@ class ODESolver:
     
 o = ODESolver()
 o.euler()
+o.midpoint()
