@@ -26,11 +26,3 @@ class Equation:
         z = z.subs(xo,x*1.0)*1.0
         val = z.subs(yo,y*1.0)*1.0
         return val
-
-    # def df(self,voo):
-    #     x = Symbol('x')
-    #     y = sympify(self.equation)
-    #     yprime = diff(y,x)
-    #     # f = lambdify(x, yprime, 'numpy')
-    #     val = yprime.subs(x,voo*1.0)*1.0
-    #     return val
