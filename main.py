@@ -29,11 +29,11 @@ class ODESolver:
         y = [self.y0]
         xn = x[0]
         yn = y[0]
-        print('%(xn).4f\t%(yn).4f'%{'xn':xn, 'yn':yn})
+        print('%(xn).5f\t%(yn).5f'%{'xn':xn, 'yn':yn})
         while 1:
             yn = yn + self.h*self.equation.f(xn,yn)
             xn = xn + self.h
-            print('%(xn).4f\t%(yn).4f'%{'xn':xn, 'yn':yn})
+            print('%(xn).5f\t%(yn).5f'%{'xn':xn, 'yn':yn})
             x.append(xn)
             y.append(yn)
             if xn > self.xf:
@@ -47,16 +47,45 @@ class ODESolver:
         y = [self.y0]
         xn = x[0]
         yn = y[0]
-        print('%(xn).4f\t%(yn).4f'%{'xn':xn, 'yn':yn})
+        print('%(xn).5f\t%(yn).5f'%{'xn':xn, 'yn':yn})
         while 1:
             yn = yn + h*f(xn+(h/2),yn + (h*f(xn,yn)/2))
             xn = xn + h
-            print('%(xn).4f\t%(yn).4f'%{'xn':xn, 'yn':yn})
+            print('%(xn).5f\t%(yn).5f'%{'xn':xn, 'yn':yn})
             x.append(xn)
             y.append(yn)
             if xn > self.xf:
                 break
         self.plot(x,y,'Midpoint','scatter')
+
+    def rk4(self):
+        f = self.equation.f
+        h = self.h
+        x = [self.x0]
+        y = [self.y0]
+        xn = x[0]
+        yn = y[0]
+        print('%(xn).5f\t%(yn).5f'%{'xn':xn, 'yn':yn})
+        while 1:
+            xm = xn + h/2
+            k1 = f(xn,yn)
+            ym = yn + h*k1/2
+            k2 = f(xm,ym)
+            ym1 = yn + h*k2/2
+            k3 = f(xm,ym1)
+            ye = yn + h*k3
+            xe = xn + h
+            k4 = f(xe,ye)
+            phi = (k1 + 2*k2 + 2*k3 + k4)/6
+
+            xn = xe
+            yn = yn + h*phi
+            print('%(xn).5f\t%(yn).5f'%{'xn':xn, 'yn':yn})
+            x.append(xn)
+            y.append(yn)
+            if xn > self.xf:
+                break
+        self.plot(x,y,'4th Order RK','scatter')
 
     def plot(self,x,y,method,pl):
         import matplotlib.pyplot as plt
@@ -76,3 +105,4 @@ class ODESolver:
 o = ODESolver()
 o.euler()
 o.midpoint()
+o.rk4()
