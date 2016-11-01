@@ -1,10 +1,4 @@
-import sys
-import parser
-from math import *
-from sympy import *
-import numpy as np
-
-
+from scipy.integrate import ode
 from equation import *
 
 class ODESolver:
@@ -17,6 +11,18 @@ class ODESolver:
         self.hmax = float(input())
         self.alpha = float(input())
         self.tol = float(input())
+        self.x = [self.x0]
+        self.y = [self.y0]
+
+    def analytic(self):
+        foo = self.equation.f
+        r = ode(f=foo,jac=None).set_integrator('dop853',method='bdf')
+        r.set_initial_value(self.y0,self.x0)
+        while r.successful() and r.t < self.xf:
+            r.integrate(r.t + 0.05)
+            self.x.append(r.t)
+            self.y.append(r.y)
+        self.plot(self.x,self.y,'Analytic ','plot')
 
     def euler(self):
         x = [self.x0]
@@ -32,6 +38,22 @@ class ODESolver:
             y.append(yn)
             if xn > self.xf:
                 break
-        
+        self.plot(x,y,'Euler','scatter')
+
+    def plot(self,x,y,method,pl):
+        import matplotlib.pyplot as plt
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.set_title(method+" Method")
+        ax.set_ylabel("Y")
+        ax.set_xlabel("X")
+        if pl == 'plot':
+            ax.plot(x,y,'-')
+        else:
+            ax.scatter(x,y, s=30, c='r', marker="s", label=method)
+        plt.legend(loc='best')
+        plt.show()
+        fig.savefig(method+" plot.png")
+    
 o = ODESolver()
 o.euler()

@@ -1,8 +1,6 @@
 import sys
-import parser
 from math import *
-from sympy import *
-import numpy as np
+import sympy
 
 class Equation:
     def __init__(self):
@@ -20,12 +18,13 @@ class Equation:
             except:
                 print("\nOops!",sys.exc_info()[0],"occured. Try again!")
 
-    def f(self,x0,y0):
-        x = Symbol('x')
-        y = Symbol('y')
-        z = sympify(self.equation)
-        z = z.subs(x,x0*1.0)*1.0
-        val = z.subs(y,y0*1.0)*1.0
+    def f(self,t,y):
+        x = t
+        xo = sympy.Symbol('x')
+        yo = sympy.Symbol('y')
+        z = sympy.sympify(self.equation)
+        z = z.subs(xo,x*1.0)*1.0
+        val = z.subs(yo,y*1.0)*1.0
         return val
 
     # def df(self,voo):
