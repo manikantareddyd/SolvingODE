@@ -15,6 +15,7 @@ class ODESolver:
         self.y = [self.y0]
 
     def euler(self):
+        print("Euler Method")
         f = self.equation.f
         x = [self.x0]
         ym = [self.y0]
@@ -40,6 +41,7 @@ class ODESolver:
         self.plot(x,ym,y,'Euler','scatter')
 
     def midpoint(self):
+        print("Midpoint Method")
         f = self.equation.f
         h = self.h
         x = [self.x0]
@@ -68,6 +70,7 @@ class ODESolver:
         self.plot(x,ym,y,'Midpoint','scatter')
 
     def rk4(self):
+        print("RK4 Method")
         f = self.equation.f
         h = self.h
         x = [self.x0]
@@ -97,6 +100,7 @@ class ODESolver:
         self.plot(x,ym, y,'4th Order RK','scatter')
 
     def rk45(self):
+        print("RK45 Method")
         f = self.equation.f
         h = self.h
         x = [self.x0]
@@ -172,8 +176,15 @@ class ODESolver:
         plt.show()
         fig.savefig(method+" plot.png")
     
+choice = int(input())    
 o = ODESolver()
-o.euler()
-o.midpoint()
-o.rk4()
-o.rk45()
+if choice == 1:
+    o.euler()
+elif choice == 2:
+    o.midpoint()
+elif choice == 3:
+    o.rk4()
+elif choice == 4:
+    o.rk45()
+else:
+    print("Make a valid choice\n")
